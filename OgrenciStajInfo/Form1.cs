@@ -227,15 +227,16 @@ namespace OgrenciStajInfo
         }
 
         private void button6_Click(object sender, EventArgs e)
-        {                            
-            baglanti = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\NewDB.accdb");            
-            string AccessSorgu = "insert into Bilgiler (AdSoyad, Numara, Program, UygulamaYeri, UygulamaYili, Sehir,Telefon, eposta) values(@AdSoyad, @Numara, @Program, @UygulamaYeri, @UygulamaYili, @Sehir, @Telefon, @eposta)";
-            komut = new OleDbCommand(AccessSorgu, baglanti);
-            baglanti.Open();    
+        {
+            baglanti = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\NewDB.accdb");
+
             for (int Satir = 0; Satir < dataGridView1.Rows.Count - 1; Satir++)
                 {
+                string AccessSorgu = "insert into Bilgiler (AdSoyad, Numara, Program, UygulamaYeri, UygulamaYili, Sehir,Telefon, eposta) values(@AdSoyad, @Numara, @Program, @UygulamaYeri, @UygulamaYili, @Sehir, @Telefon, @eposta)";
 
-                komut.Parameters.AddWithValue("@ID", dataGridView1.Rows[Satir].Cells["dg_ID"].Value.ToString());
+                komut = new OleDbCommand(AccessSorgu, baglanti);
+                baglanti.Open();
+            
                 komut.Parameters.AddWithValue("@AdSoyad", dataGridView1.Rows[Satir].Cells["dg_AdSoyad"].Value.ToString());
                 komut.Parameters.AddWithValue("@Numara", dataGridView1.Rows[Satir].Cells["dg_Numara"].Value.ToString());
                 komut.Parameters.AddWithValue("@Program", dataGridView1.Rows[Satir].Cells["dg_Program"].Value.ToString());
@@ -245,10 +246,10 @@ namespace OgrenciStajInfo
                 komut.Parameters.AddWithValue("@Telefon", dataGridView1.Rows[Satir].Cells["dg_Telefon"].Value.ToString());
                 komut.Parameters.AddWithValue("@eposta", dataGridView1.Rows[Satir].Cells["dg_Mail"].Value.ToString());
 
-                komut.ExecuteNonQuery();  
-                
+                komut.ExecuteNonQuery();
+                baglanti.Close();
             }
-            baglanti.Close();
+           
 
             MessageBox.Show("Kayıtlar eklendi","Aktarma Başarılı",MessageBoxButtons.OK);
              
